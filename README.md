@@ -1,6 +1,6 @@
-OpenMIAGE gui commons
+OpenMIAGE Commons GUI
 
-OpenMIAGE gui commons est un ensemble de packages communs aux IHM d'OpenMIAGE.
+OpenMIAGE Commons GUI est un ensemble de packages communs aux IHM d'OpenMIAGE.
 
 Vous pouvez suivre l'avancé de nos développements sur www.open-miage.org
 
