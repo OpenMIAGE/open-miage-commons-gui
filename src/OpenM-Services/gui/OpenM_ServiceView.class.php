@@ -4,7 +4,7 @@ if (!defined("OpenM_SERVICE_CONFIG_FILE_NAME"))
     define("OpenM_SERVICE_CONFIG_FILE_NAME", "config.properties");
 
 Import::php("util.Properties");
-Import::php("OpenM-Services.view.OpenM_ServiceViewException");
+Import::php("OpenM-Services.gui.OpenM_ServiceViewException");
 
 /**
  * 
@@ -16,7 +16,7 @@ abstract class OpenM_ServiceView {
     const SMARTY_TEMPLATE_C_DIR = "Smarty.template_c.dir";
     const SMARTY_RESOURCES_DIR_VAR_NAME = "resources_dir";
     const SMARTY_CACHE_DIR = "Smarty.cache.dir";
-    const RESOURCES_DIR = "view.resources_dir";
+    const RESOURCES_DIR = "gui.resources_dir";
     const LOG_MODE_PROPERTY = "OpenM_Log.mode";
     const LOG_LINE_MAX_SIZE = "OpenM_Log.line.max.size";
     const LOG_MODE_ACTIVATED = "ON";

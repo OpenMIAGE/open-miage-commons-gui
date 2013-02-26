@@ -1,6 +1,6 @@
 <?php
 
-Import::php("OpenM-Services.view.OpenM_ServiceView");
+Import::php("OpenM-Services.gui.OpenM_ServiceView");
 Import::php("OpenM-SSO.client.OpenM_SSOClientPoolSessionManager");
 Import::php("util.http.OpenM_Header");
 

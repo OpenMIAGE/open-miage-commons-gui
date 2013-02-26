@@ -1,6 +1,6 @@
 <?php
 
-Import::php("OpenM-Controller.view.OpenM_ViewDefaultServer");
+Import::php("OpenM-Controller.gui.OpenM_ViewDefaultServer");
 Import::php("util.http.OpenM_URL");
 
 /**

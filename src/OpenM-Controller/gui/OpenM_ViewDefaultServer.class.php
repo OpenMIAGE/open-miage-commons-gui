@@ -1,8 +1,8 @@
 <?php
 
-Import::php("OpenM-Services.view.OpenM_ServiceView");
-Import::php("OpenM-Controller.view.OpenM_ViewDefaultServerException");
-Import::php("OpenM-Controller.view.OpenM_URLViewController");
+Import::php("OpenM-Services.gui.OpenM_ServiceView");
+Import::php("OpenM-Controller.gui.OpenM_ViewDefaultServerException");
+Import::php("OpenM-Controller.gui.OpenM_URLViewController");
 Import::php("util.Properties");
 Import::php("util.wrapper.RegExp");
 
@@ -59,14 +59,14 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
                 throw new OpenM_ViewDefaultServerException(self::DEFAULT_PAGE . " not defined in " . self::CONFIG_FILE_NAME);
             $a = explode(".", $page);
             if (isset($a[0]))
-                $view = $a[0];
+                $gui = $a[0];
             if (isset($a[1]))
                 $form = $a[1];
             if (isset($a[2]))
                 $lang = $a[2];
         }
         else
-            $view = $_GET[OpenM_URLViewController::VIEW];
+            $gui = $_GET[OpenM_URLViewController::VIEW];
 
         if (isset($_GET[OpenM_URLViewController::LANG]))
             $lang = $_GET[OpenM_URLViewController::LANG];
@@ -85,10 +85,10 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
         if (isset($a[1]))
             $error404_form = $a[1];
 
-        if (!RegExp::preg("/^([a-zA-Z0-9]|_)+$/", $view))
+        if (!RegExp::preg("/^([a-zA-Z0-9]|_)+$/", $gui))
             return self::set($error404_class, $error404_form);
 
-        $class = OpenM_URLViewController::classFromView($view);
+        $class = OpenM_URLViewController::classFromView($gui);
         $classFile = $class . self::VIEW_EXTENTION;
 
         if (!is_file($classFile))
