@@ -1,10 +1,20 @@
-OpenMIAGE gui commons
+OpenMIAGE Commons GUI
+=====================
 
-OpenMIAGE gui commons est un ensemble de packages communs aux IHM d'OpenMIAGE.
+Description
+=====================
+OpenMIAGE Commons GUI est un ensemble de packages communs aux IHM d'OpenMIAGE.
 
-Vous pouvez suivre l'avancé de nos développements sur www.open-miage.org
+Vous pouvez suivre l'avancé de nos développements sur [www.open-miage.org](http://www.open-miage.org)
 
+Prerequis
+=====================
+ * PHP 5.2.x min
 
-RQ: Pour installer les lib nécessaires à l'exécution des sources, lancer préalablement ./install.lib.php
+Dependencies
+=====================
+        launch ./install.lib.php before all to install dependencies (See ./lib/* for dependencies)
 
-RQ2: ces développements sont fait sous netbeans : http://netbeans.org/downloads/
+Remarques
+=====================
+ * ces développements sont fait sous netbeans : [netbeans.org/downloads](http://netbeans.org/downloads/)
