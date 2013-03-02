@@ -3,6 +3,9 @@
 if (!defined("OpenM_SERVICE_CONFIG_FILE_NAME"))
     define("OpenM_SERVICE_CONFIG_FILE_NAME", "config.properties");
 
+if (!Import::php("Smarty"))
+    throw new ImportException("Smarty");
+
 Import::php("util.Properties");
 Import::php("OpenM-Services.gui.OpenM_ServiceViewException");
 
@@ -48,10 +51,10 @@ abstract class OpenM_ServiceView {
             OpenM_Log::init($p->get(self::LOG_PATH_PROPERTY), $p->get(self::LOG_LEVEL_PROPERTY), $p->get(self::LOG_FILE_NAME), $p->get(self::LOG_LINE_MAX_SIZE));
         $this->template_c = $p->get(self::SMARTY_TEMPLATE_C_DIR);
         if ($this->template_c == null)
-            throw new OpenM_ServiceViewException(self::SMARTY_TEMPLATE_C_DIR . " not defined in config file" . self::OPENM_CONFIG_FILE_PATH);
+            throw new OpenM_ServiceViewException(self::SMARTY_TEMPLATE_C_DIR . " not defined in config file" . self::CONFIG_FILE_NAME);
         $this->ressources_dir = $p->get(self::RESOURCES_DIR);
         if ($this->ressources_dir == null)
-            throw new OpenM_ServiceViewException(self::RESOURCES_DIR . " not defined in config file" . self::OPENM_CONFIG_FILE_PATH);
+            throw new OpenM_ServiceViewException(self::RESOURCES_DIR . " not defined in config file" . self::CONFIG_FILE_NAME);
         $this->cache_dir = $p->get(self::SMARTY_CACHE_DIR);
         $this->smarty = new Smarty();
     }
