@@ -3,7 +3,6 @@
 /**
  * recover OpenM.util package
  */
-echo "<b>OpenM.util dependency installation:</b><br>";
 $util = explode("=", file_get_contents("lib/openm.util.dependencies"));
 $lib = "http://open-miage.org/download/" . $util[0] . "/" . $util[1];
 $lib_dir = "../lib";
@@ -45,7 +44,7 @@ if ($res === TRUE) {
     Import::addLibPath($util[0]);
     OpenM_Dir::rm($temp);
     echo " - $temp <b>correctly removed</b><br>";
-    echo '<b>lib OpenM.utilsuccesfully installed</b> !<br>';
+    echo ' - lib OpenM.util succesfully installed !<br>';
 }
 else
     die('<h1>error occurs</h1>');
@@ -55,11 +54,6 @@ else
  */
 Import::php("util.pkg.OpenM_Dependencies");
 $dependencies = new OpenM_Dependencies("lib");
-$dependencies->install("./temp", OpenM_Dependencies::RUN, true);
-echo "<b>RUN dependencies correctly installed</b><br>";
-$dependencies->install("./temp", OpenM_Dependencies::TEST, true);
-echo "<b>TEST dependencies correctly installed</b><br>";
-$dependencies->install("./temp", OpenM_Dependencies::DISPLAY, true);
-echo "<b>DISPLAY dependencies correctly installed</b><br>";
+$dependencies->install("./temp", OpenM_Dependencies::ALL(), true);
 OpenM_Dir::rm("./temp");
 ?>
