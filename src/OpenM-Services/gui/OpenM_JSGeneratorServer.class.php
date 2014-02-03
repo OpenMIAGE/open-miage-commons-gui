@@ -8,8 +8,8 @@ if (!Import::php("Smarty"))
 
 /**
  * This server manage Javascript file generation for a js list in parameter
- * @package OpenM\OpenM-Book
- * @subpackage OpenM\OpenM-Commons\commons
+ * @package OpenM\OpenM-Services
+ * @subpackage OpenM\OpenM-Services\gui
  * @copyright (c) 2013, www.open-miage.org
  * @license http://www.apache.org/licenses/LICENSE-2.0 Licensed under the Apache 
  * License, Version 2.0 (the "License");
