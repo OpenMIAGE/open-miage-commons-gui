@@ -140,6 +140,9 @@ class OpenM_URLViewController {
         return self::$root;
     }
 
+    public static function getLang() {
+        return self::$lang;
+    }
 }
 
 ?>

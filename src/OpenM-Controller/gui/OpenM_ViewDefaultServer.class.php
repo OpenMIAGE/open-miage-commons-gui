@@ -25,6 +25,7 @@ Import::php("util.wrapper.RegExp");
 class OpenM_ViewDefaultServer extends OpenM_ServiceView {
 
     const DEFAULT_PAGE = "OpenM_ViewDefaultServer.default.page";
+    const DEFAULT_LANG = "OpenM_ViewDefaultServer.default.lang";
     const DEFAULT_ERROR_404 = "OpenM_ViewDefaultServer.default.error.404";
     const ROOT = "OpenM_ViewDefaultServer.root";
     const VIEW_PREFIX = "OpenM_";
@@ -84,6 +85,8 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
             $lang = $_GET[OpenM_URLViewController::LANG];
         if ($lang != null && $lang != "")
             OpenM_URLViewController::setLang($lang);
+        else if ($p->get(self::DEFAULT_LANG) !== null)
+            OpenM_URLViewController::setLang($p->get(self::DEFAULT_LANG));
 
         $error404 = $p->get(self::DEFAULT_ERROR_404);
         if ($error404 == null)
