@@ -61,6 +61,15 @@ abstract class OpenM_ServiceView {
 
     public abstract function _default();
 
+    protected function _redirect($method, $class = null, $parameters = null) {
+        if ($class === null)
+            $class = $this->getClass();
+        if ($parameters === null)
+            OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_URLViewController::viewFromClass($class), $method)->getURL());
+        else
+            OpenM_Header::redirect(OpenM_URLViewController::from(OpenM_URLViewController::viewFromClass($class), $method, $parameters)->getURL());
+    }
+
     public static function getClass() {
         return get_called_class();
     }
