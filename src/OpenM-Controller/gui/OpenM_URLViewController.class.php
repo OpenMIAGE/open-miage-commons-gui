@@ -82,6 +82,10 @@ class OpenM_URLViewController {
 
         self::$lang = $lang;
     }
+    
+    public static function getLang() {
+        return "".self::$lang;
+    }
 
     public static function setRoot($root) {
         if (!String::isString($root))
@@ -140,6 +144,9 @@ class OpenM_URLViewController {
         return self::$root;
     }
 
+    public static function getLang() {
+        return self::$lang;
+    }
 }
 
 ?>
