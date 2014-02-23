@@ -136,16 +136,12 @@ class OpenM_URLViewController {
         throw new OpenM_ViewDefaultServerException("not implemented");
     }
 
-    public static function from($view = null, $form = null, $value = null) {
-        return new OpenM_URLViewController($view, $form, $value);
+    public static function from($class = null, $method = null, $params = null) {
+        return new OpenM_URLViewController($class, $method, $params);
     }
 
     public static function getRoot() {
         return self::$root;
-    }
-
-    public static function getLang() {
-        return self::$lang;
     }
 }
 
