@@ -41,25 +41,35 @@ abstract class OpenM_ServiceView {
 
     protected $configFile;
     protected $template_c;
-    protected $ressources_dir;
+    protected $resources_dir;
     protected $cache_dir;
     protected $smarty;
+    protected $properties;
 
     public function __construct() {
-        $p = Properties::fromFile(self::CONFIG_FILE_NAME);
-        if ($p->get(self::LOG_MODE_PROPERTY) == self::LOG_MODE_ACTIVATED)
-            OpenM_Log::init($p->get(self::LOG_PATH_PROPERTY), $p->get(self::LOG_LEVEL_PROPERTY), $p->get(self::LOG_FILE_NAME), $p->get(self::LOG_LINE_MAX_SIZE));
-        $this->template_c = $p->get(self::SMARTY_TEMPLATE_C_DIR);
+        $this->properties = Properties::fromFile(self::CONFIG_FILE_NAME);
+        if ($this->properties->get(self::LOG_MODE_PROPERTY) == self::LOG_MODE_ACTIVATED)
+            OpenM_Log::init($this->properties->get(self::LOG_PATH_PROPERTY), $this->properties->get(self::LOG_LEVEL_PROPERTY), $this->properties->get(self::LOG_FILE_NAME), $this->properties->get(self::LOG_LINE_MAX_SIZE));
+        $this->template_c = $this->properties->get(self::SMARTY_TEMPLATE_C_DIR);
         if ($this->template_c == null)
             throw new OpenM_ServiceViewException(self::SMARTY_TEMPLATE_C_DIR . " not defined in config file" . self::CONFIG_FILE_NAME);
-        $this->ressources_dir = $p->get(self::RESOURCES_DIR);
-        if ($this->ressources_dir == null)
+        $this->resources_dir = $this->properties->get(self::RESOURCES_DIR);
+        if ($this->resources_dir == null)
             throw new OpenM_ServiceViewException(self::RESOURCES_DIR . " not defined in config file" . self::CONFIG_FILE_NAME);
-        $this->cache_dir = $p->get(self::SMARTY_CACHE_DIR);
+        $this->cache_dir = $this->properties->get(self::SMARTY_CACHE_DIR);
         $this->smarty = new Smarty();
     }
 
     public abstract function _default();
+
+    protected function _redirect($method, $class = null, $parameters = null) {
+        if ($class === null)
+            $class = $this->getClass();
+        if ($parameters === null)
+            OpenM_Header::redirect(OpenM_URLViewController::from($class, $method)->getURL());
+        else
+            OpenM_Header::redirect(OpenM_URLViewController::from($class, $method, $parameters)->getURL());
+    }
 
     public static function getClass() {
         return get_called_class();
