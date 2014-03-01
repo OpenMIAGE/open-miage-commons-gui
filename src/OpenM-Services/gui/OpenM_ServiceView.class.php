@@ -29,6 +29,7 @@ abstract class OpenM_ServiceView {
     const CONFIG_FILE_NAME = OpenM_SERVICE_CONFIG_FILE_NAME;
     const SMARTY_TEMPLATE_C_DIR = "Smarty.template_c.dir";
     const SMARTY_RESOURCES_DIR_VAR_NAME = "resources_dir";
+    const SMARTY_ROOT_DIR_VAR_NAME = "root";
     const SMARTY_CACHE_DIR = "Smarty.cache.dir";
     const RESOURCES_DIR = "gui.resources_dir";
     const LOG_MODE_PROPERTY = "OpenM_Log.mode";
@@ -49,14 +50,15 @@ abstract class OpenM_ServiceView {
     public function __construct() {
         $this->properties = Properties::fromFile(self::CONFIG_FILE_NAME);
         if ($this->properties->get(self::LOG_MODE_PROPERTY) == self::LOG_MODE_ACTIVATED)
-            OpenM_Log::init($this->properties->get(self::LOG_PATH_PROPERTY), $this->properties->get(self::LOG_LEVEL_PROPERTY), $this->properties->get(self::LOG_FILE_NAME), $this->properties->get(self::LOG_LINE_MAX_SIZE));
-        $this->template_c = $this->properties->get(self::SMARTY_TEMPLATE_C_DIR);
-        if ($this->template_c == null)
+            OpenM_Log::init(dirname(self::CONFIG_FILE_NAME) . "/" . $this->properties->get(self::LOG_PATH_PROPERTY), $this->properties->get(self::LOG_LEVEL_PROPERTY), $this->properties->get(self::LOG_FILE_NAME), $this->properties->get(self::LOG_LINE_MAX_SIZE));
+        if ($this->properties->get(self::SMARTY_TEMPLATE_C_DIR) == null)
             throw new OpenM_ServiceViewException(self::SMARTY_TEMPLATE_C_DIR . " not defined in config file" . self::CONFIG_FILE_NAME);
-        $this->resources_dir = $this->properties->get(self::RESOURCES_DIR);
-        if ($this->resources_dir == null)
+        $this->template_c = dirname(self::CONFIG_FILE_NAME) . "/" . $this->properties->get(self::SMARTY_TEMPLATE_C_DIR);
+        $this->ressources_dir = $this->properties->get(self::RESOURCES_DIR);
+        if ($this->ressources_dir === null)
             throw new OpenM_ServiceViewException(self::RESOURCES_DIR . " not defined in config file" . self::CONFIG_FILE_NAME);
-        $this->cache_dir = $this->properties->get(self::SMARTY_CACHE_DIR);
+        if ($this->properties->get(self::SMARTY_CACHE_DIR) !== null)
+            $this->cache_dir = dirname(self::CONFIG_FILE_NAME) . "/" . $this->properties->get(self::SMARTY_CACHE_DIR);
         $this->smarty = new Smarty();
     }
 

@@ -42,7 +42,7 @@ abstract class OpenM_ServiceViewSSO extends OpenM_ServiceView {
         $path = $this->properties->get(self::SSO_CONFIG_FILE_PATH);
         if ($path == null)
             throw new OpenM_ServiceViewException(self::SSO_CONFIG_FILE_PATH . " not defined in " . self::CONFIG_FILE_NAME);
-        $this->manager = OpenM_SSOClientPoolSessionManager::fromFile($path);
+        $this->manager = OpenM_SSOClientPoolSessionManager::fromFile(dirname(self::CONFIG_FILE_NAME) . "/" . $path);
     }
 
 }
