@@ -33,6 +33,7 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
     const VIEW_EXTENTION = ".class.php";
 
     private static $url;
+    private static $error404;
 
     public static function handle() {
         try {
@@ -96,10 +97,10 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
         $error404_classFile = $error404_class . self::VIEW_EXTENTION;
         if (!Import::php($error404_classFile))
             throw new OpenM_ViewDefaultServerException("default error 404 manager class not found");
-
+        
         if (isset($a[1]))
             $error404_form = $a[1];
-
+        
         if (!RegExp::preg("/^([a-zA-Z0-9]|_)+$/", $gui))
             return self::set($error404_class, $error404_form);
 
@@ -133,6 +134,10 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
 
     public function _default() {
         die("forbidden method called");
+    }
+
+    public static function get404() {
+        return self::$error404;
     }
 
 }
