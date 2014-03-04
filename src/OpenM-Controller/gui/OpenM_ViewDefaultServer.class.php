@@ -33,6 +33,7 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
     const VIEW_EXTENTION = ".class.php";
 
     private static $url;
+    private static $error404;
 
     public static function handle() {
         try {
@@ -100,6 +101,8 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
         if (isset($a[1]))
             $error404_form = $a[1];
 
+        self::$error404 = new OpenM_URLViewController($error404_class, $error404_form);
+
         if (!RegExp::preg("/^([a-zA-Z0-9]|_)+$/", $gui))
             return self::set($error404_class, $error404_form);
 
@@ -133,6 +136,10 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
 
     public function _default() {
         die("forbidden method called");
+    }
+
+    public static function get404() {
+        return self::$error404;
     }
 
 }
