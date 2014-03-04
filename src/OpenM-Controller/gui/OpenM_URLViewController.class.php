@@ -82,9 +82,9 @@ class OpenM_URLViewController {
 
         self::$lang = $lang;
     }
-    
+
     public static function getLang() {
-        return "".self::$lang;
+        return "" . self::$lang;
     }
 
     public static function setRoot($root) {
@@ -143,6 +143,11 @@ class OpenM_URLViewController {
     public static function getRoot() {
         return self::$root;
     }
+
+    public function redirect() {
+        OpenM_Header::redirect($this->getURL());
+    }
+
 }
 
 ?>
