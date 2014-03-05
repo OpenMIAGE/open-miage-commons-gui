@@ -5,6 +5,7 @@ Import::php("OpenM-Controller.gui.OpenM_ViewDefaultServerException");
 Import::php("OpenM-Controller.gui.OpenM_URLViewController");
 Import::php("util.Properties");
 Import::php("util.wrapper.RegExp");
+Import::php("util.OpenM_Log");
 
 /**
  * @copyright (c) 2013, www.open-miage.org
@@ -35,14 +36,18 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
     private static $url;
     private static $error404;
 
-    public static function handle() {
+    public function handle() {
+        OpenM_Log::debug("launch server", __CLASS__, __METHOD__, __LINE__);
         try {
-            $url = self::init();
+            $url = $this->init();
         } catch (Exception $exc) {
             die($exc->getMessage());
         }
+        OpenM_Log::debug("url found", __CLASS__, __METHOD__, __LINE__);
         $class = $url->getClass();
+        OpenM_Log::debug("create view", __CLASS__, __METHOD__, __LINE__);
         $object = new $class();
+        OpenM_Log::debug("call form", __CLASS__, __METHOD__, __LINE__);
         $form = $url->getMethod();
         $value = $url->getValue();
         if ($value != "" && $value != null)
@@ -56,17 +61,21 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
      * @return OpenM_URLViewController
      * @throws OpenM_ViewDefaultServerException
      */
-    private static function init() {
+    private function init() {
         if (self::$url != null)
             return self::$url;
 
+        OpenM_Log::debug("load property file", __CLASS__, __METHOD__, __LINE__);
         $p = Properties::fromFile(self::CONFIG_FILE_NAME);
+        OpenM_Log::debug("load root", __CLASS__, __METHOD__, __LINE__);
         $root = $p->get(self::ROOT);
         if ($root == null)
             throw new OpenM_ViewDefaultServerException(self::ROOT . " not defined in " . self::CONFIG_FILE_NAME);
 
+        OpenM_Log::debug("set root path to URL controller", __CLASS__, __METHOD__, __LINE__);
         OpenM_URLViewController::setRoot($root);
 
+        OpenM_Log::debug("recover view from URL", __CLASS__, __METHOD__, __LINE__);
         if (!isset($_GET[OpenM_URLViewController::VIEW])) {
             $page = $p->get(self::DEFAULT_PAGE);
             if ($page == null)
@@ -82,6 +91,7 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
         else
             $gui = $_GET[OpenM_URLViewController::VIEW];
 
+        OpenM_Log::debug("recover lang from URL", __CLASS__, __METHOD__, __LINE__);
         if (isset($_GET[OpenM_URLViewController::LANG]))
             $lang = $_GET[OpenM_URLViewController::LANG];
         if ($lang != null && $lang != "")
@@ -89,6 +99,7 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
         else if ($p->get(self::DEFAULT_LANG) !== null)
             OpenM_URLViewController::setLang($p->get(self::DEFAULT_LANG));
 
+        OpenM_Log::debug("recover error404 from config file", __CLASS__, __METHOD__, __LINE__);
         $error404 = $p->get(self::DEFAULT_ERROR_404);
         if ($error404 == null)
             throw new OpenM_ViewDefaultServerException(self::DEFAULT_ERROR_404 . " not defined in " . self::CONFIG_FILE_NAME);
@@ -101,35 +112,40 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
         if (isset($a[1]))
             $error404_form = $a[1];
 
+        OpenM_Log::debug("save 404 error URL", __CLASS__, __METHOD__, __LINE__);
         self::$error404 = new OpenM_URLViewController($error404_class, $error404_form);
 
         if (!RegExp::preg("/^([a-zA-Z0-9]|_)+$/", $gui))
-            return self::set($error404_class, $error404_form);
+            return $this->set($error404_class, $error404_form);
 
+        OpenM_Log::debug("recover class from view", __CLASS__, __METHOD__, __LINE__);
         $class = OpenM_URLViewController::classFromView($gui);
         $classFile = $class . self::VIEW_EXTENTION;
 
         if (!is_file($classFile))
-            return self::set($error404_class, $error404_form);
+            return $this->set($error404_class, $error404_form);
         if (!Import::php($classFile))
-            return self::set($error404_class, $error404_form);
+            return $this->set($error404_class, $error404_form);
         if (!class_exists($class))
-            return self::set($error404_class, $error404_form);
+            return $this->set($error404_class, $error404_form);
 
+        OpenM_Log::debug("recover form from URL", __CLASS__, __METHOD__, __LINE__);
         if (isset($_GET[OpenM_URLViewController::FORM]))
             $form = $_GET[OpenM_URLViewController::FORM];
         else if ($form == null || $form == "")
             $form = self::DEFAULT_FORM;
 
         if (!RegExp::preg("/^([a-zA-Z0-9]|_)+$/", $form))
-            return self::set($error404_class, $error404_form);
+            return $this->set($error404_class, $error404_form);
         if (!method_exists($class, $form))
-            return self::set($error404_class, $error404_form);
+            return $this->set($error404_class, $error404_form);
 
-        return self::set($class, $form);
+        OpenM_Log::debug("recover method from form", __CLASS__, __METHOD__, __LINE__);
+        return $this->set($class, $form);
     }
 
-    private static function set($class, $form, $value = null) {
+    private function set($class, $form, $value = null) {
+        OpenM_Log::debug("create URL controller from class, method and parameters", __CLASS__, __METHOD__, __LINE__);
         self::$url = new OpenM_URLViewController($class, $form, $value);
         return self::$url;
     }
@@ -138,7 +154,7 @@ class OpenM_ViewDefaultServer extends OpenM_ServiceView {
         die("forbidden method called");
     }
 
-    public static function get404() {
+    public function get404() {
         return self::$error404;
     }
 
